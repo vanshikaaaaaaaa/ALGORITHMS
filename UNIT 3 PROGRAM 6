@@ -1,0 +1,25 @@
+ 6. EDIT DISTANCE
+Edit_Distance_Problem(Str_1, Str_2):
+
+    // length of strings
+    N <- length of Str_1
+    M <- length of Str_2
+
+    //for each r = 0,...,M
+    Initialize Table[0,r] = 0 
+
+    //for each j = 1,...,N
+    Initialize Table[j,0] = 0   
+
+    //for every row
+    For j = 1,...,N:   
+        //for every column
+        For r = 0,...,M:   
+            If Str_1[j-1] == Str_2[r-1]: 
+                Table[j,r] = Table[j-1,r-1]
+            else:
+                Table[j,r] = 1 + min(Table[j-1][r-1], Table[j-1][r],Table[j][r-1])
+
+Return Table[N,M]
+
+  
