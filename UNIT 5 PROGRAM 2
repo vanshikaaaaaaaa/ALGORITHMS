@@ -1,0 +1,17 @@
+ 2. Implement Depth First Search (DFS) algorithm to traverse a graph and find connected components in C or Python.
+
+void Graph::DFS(int v)
+{
+    // Mark the current node as visited and
+    // print it
+    visited[v] = true;
+    cout << v << " ";
+ 
+    // Recur for all the vertices adjacent
+    // to this vertex
+    list<int>::iterator i;
+    for (i = adj[v].begin(); i != adj[v].end(); ++i)
+        if (!visited[*i])
+            DFS(*i);
+} 
+
