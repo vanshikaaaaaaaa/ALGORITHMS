@@ -1,0 +1,24 @@
+ 
+ANSWER 3:--
+GCD Algorithm 1: Brute Force
+The idea is to try all integers from n down until finding one that divides m and n evenly.
+First, define tryDivisor that takes in m, n, and a guess. If the guess works, then it returns the guess. Otherwise, it tries a smaller guess.
+int tryDivisor(int m, int n, int g) {
+   if (((m % g) == 0) && ((n % g) == 0))
+      return g;
+   else
+      return tryDivisor(m, n, g - 1);
+}
+      
+Now we can reduce GCD to tryDivisor:
+int gcd(int m, int n) {
+   return tryDivisor(m, n, n);   // use n as our first guess
+}
+
+gcd(6, 4)
+tryDivisor(6, 4, 4)
+tryDivisor(6, 4, 3)
+tryDivisor(6, 4, 2)
+=> 2
+
+ 
