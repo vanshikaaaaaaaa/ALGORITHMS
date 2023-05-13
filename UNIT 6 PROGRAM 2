@@ -1,0 +1,18 @@
+ 2>	 Maximum clique problem…
+Pseudocode
+Algorithm: Max-Clique (G, n, k)
+S := ф
+for i = 1 to k do
+   t := choice (1…n) 
+   if t є S then
+      return failure
+   S := S U t 
+for all pairs (i, j) such that i є S and j є S and i ≠ j do
+   if (i, j) is not a edge of the graph then 
+      return failure
+return success
+
+Analysis
+Max-Clique problem is a non-deterministic algorithm. In this algorithm, first we try to determine a set of k distinct vertices and then we try to test whether these vertices form a complete graph.
+There is no polynomial time deterministic algorithm to solve this problem. This problem is NP-Complete.
+ 
