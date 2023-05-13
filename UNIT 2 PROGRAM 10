@@ -1,0 +1,70 @@
+ 10.	Implement a divide-and-conquer algorithm for sorting a linked list.
+11.	node* MergeSortedList(node* lst1, node* lst2) 
+12.	{ 
+13.	    node* result = NULL; 
+14.	
+15.	    // Base Cases
+16.	    if (lst1 == NULL) 
+17.	        return (lst2); 
+18.	    else if (lst2 == NULL) 
+19.	        return (lst1); 
+20.	
+21.	    // recursively merging two lists
+22.	    if (lst1->data <= lst2->data) { 
+23.	        result = lst1; 
+24.	        result->next = MergeSortedList(lst1->next, lst2); 
+25.	    } 
+26.	    else { 
+27.	        result = lst2; 
+28.	        result->next = MergeSortedList(lst1, lst2->next); 
+29.	    } 
+30.	    return result; 
+31.	} 
+32.	
+33.	// Splitting two into halves.
+34.	// If the size of the list is odd, then extra element goes in the first list.
+35.	void SplitList(node* source, node** front, node** back) 
+36.	{ 
+37.	    node* ptr1; 
+38.	    node* ptr2; 
+39.	    ptr2 = source; 
+40.	    ptr1 = source->next; 
+41.	
+42.	    // ptr1 is incrmented twice and ptr2 is icremented once.
+43.	    while (ptr1 != NULL) { 
+44.	        ptr1 = ptr1->next; 
+45.	        if (ptr1 != NULL) { 
+46.	            ptr2 = ptr2->next; 
+47.	            ptr1 = ptr1->next; 
+48.	        } 
+49.	    } 
+50.	
+51.	    // ptr2 is at the midpoint.
+52.	    *front = source; 
+53.	    *back = ptr2->next; 
+54.	    ptr2->next = NULL; 
+55.	} 
+56.	
+57.	// Merge Sort
+58.	void MergeSort(node** thead) 
+59.	{ 
+60.	    node* head = *thead; 
+61.	    node* ptr1; 
+62.	    node* ptr2; 
+63.	
+64.	  // Base Case
+65.	    if ((head == NULL) || (head->next == NULL)) { 
+66.	        return; 
+67.	    } 
+68.	
+69.	    // Splitting list
+70.	    SplitList(head, &ptr1, &ptr2); 
+71.	
+72.	    // Recursively sorting two lists.
+73.	    MergeSort(&ptr1); 
+74.	    MergeSort(&ptr2); 
+75.	
+76.	    // Sorted List.
+77.	    *thead = MergeSortedList(ptr1, ptr2); 
+78.	} 
+79.	
