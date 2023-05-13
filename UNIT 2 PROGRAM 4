@@ -1,0 +1,27 @@
+ANSWER 4:- 
+Euclid's Algorithm  
+ 
+ 
+ 
+Now any divisor d common to m and n must divide the first term with no remainder, since it is the product of n and an integer. Therefore, d must also divide the second term since d divides m and m is the sum of the two terms.
+Since any divisor common to m and n must divide the remainder of m/n, we know that, in particular, the gcd does, since it is a common divisor. It just happens to be the greatest such divisor.
+So by taking the GCD(n, remainder of m/n), we can "close in quickly" on the GCD of m and n. (This is extremely clever -- you wouldn't be expected to come up with something like this in an algorithm question on a CS101 exam.)
+Now we can write:
+int gcd(int m, int n) {
+   if ((m % n) == 0)
+      return n;
+   else
+      return gcd(n, m % n);
+}
+
+gcd(468, 24)
+gcd(24, 12)
+=> 12
+
+gcd(135, 19)
+gcd(19, 2)
+gcd(2, 1)
+=> 1
+      
+Euclid's GCD algorithm is very fast, but divison (taking remainders) is a more time-consuming operation than simple addition and subtraction.   
+   
