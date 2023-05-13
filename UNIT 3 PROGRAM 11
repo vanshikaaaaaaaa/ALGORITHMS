@@ -1,0 +1,48 @@
+ 11.	Create a flowchart for a dynamic programming algorithm that solves the longest common substring problem.
+// C++ program for finding the length of the longest common substring using recursion
+
+#include <iostream>
+ 
+using namespace std;
+ 
+string string_1, string_2;
+ 
+// This is the recursive function that returns the length of the longest common substring
+int LCS(int iterator_1, int iterator_2, int LCSCount){
+    
+    // Base Case
+    if (iterator_1 == 0 || iterator_2 == 0)
+        return LCSCount;
+    // If the last character is same then the next character need to be compared to decrement the counter
+    // increase the LCSCount by 1
+    
+    if (string_1[iterator_1 - 1] == string_2[iterator_2 - 1]) {
+        LCSCount = LCS(iterator_1 - 1, iterator_2 - 1, LCSCount + 1);
+    }
+    // if the characters are not the same then you need to decrease the iterator_1 once and update the LCSCount to 0
+    // The other case can be we can decrement the iterator_2 and update the LCSCount to 0
+    // The answer is the max of all these cases
+    
+    LCSCount = max(LCSCount, max(LCS(iterator_1, iterator_2 - 1, 0),LCS(iterator_1 - 1, iterator_2, 0)));
+    
+    // return the LCSCount
+    return LCSCount;
+}
+ 
+// Driver code
+int main(){
+    
+    int N, M;
+ 
+    string_1 = "singer";
+    string_2 = "singing";
+ 
+    // length of two strings is 
+    N = string_1.size();
+    M = string_2.size();
+    
+    // call for the recursive function to get the length of the longest common substring
+    cout << LCS(N, M, 0);
+ 
+    return 0;
+} 
