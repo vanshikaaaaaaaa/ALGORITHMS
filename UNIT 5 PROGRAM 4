@@ -1,0 +1,14 @@
+ 
+ 4.Implement the Floyd-Warshall algorithm to find the shortest path between all pairs of nodes in a graph in C or Python.
+
+let dist be V × V matrix of minimum distances initialized to INFINITY
+for each vertex v
+  dist[v][v] = 0
+for each edge (u, v)
+  dist[u][v] = weight(u, v)
+ 
+for k from 0 to |V| – 1
+  for i from 0 to |V| – 1
+    for j from 0 to |V| – 1
+      if (dist[i][k] + dist[k][j]) is less than dist[i][j] then
+        dist[i][j] = dist[i][k] + dist[k][j] 
