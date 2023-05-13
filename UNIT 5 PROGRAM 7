@@ -1,0 +1,75 @@
+ 7. Apply graph algorithms to analyze the network structure and connectivity of a real-world social network, such as Facebook or Twitter.
+votes_data = pd.read_excel('ESC2018_GF.xlsx',sheetname='Combined result')
+votes_melted = votes_data.melt(
+	    ['Rank','Running order','Country','Total'],
+	    var_name = 'Source Country',value_name='points')    
+	    
+	G = nx.from_pandas_edgelist(votes_melted, 
+	                            source='Source Country',
+	                            target='Country',
+	                            edge_attr='points',
+	                            create_using=nx.DiGraph())
+	                            
+	nx.draw_networkx(G)
+
+countries = pd.read_csv('countries.csv',index_col='Country')
+	
+	pos_geo = {  node: 
+	           ( max(-10,min(countries.loc[node]['longitude'],55)), # fixing scale
+	             max(countries.loc[node]['latitude'],25)) #fixing scale
+	               for node in G.nodes() }
+	               pos_geo = {}
+	               
+	for node in G.nodes():
+	    pos_geo[node] = (
+	                    max(-10,min(countries.loc[node]['longitude'],55)), # fixing scale
+	                    max(countries.loc[node]['latitude'],25) #fixing scale  )
+	    
+	flags = {}
+	flag_color = {}
+	for node in tqdm.tqdm_notebook(G.nodes()):
+	    flags[node] = 'flags/'+(countries.loc[node]['cc3']).lower().replace(' ','')+'.png'   
+	    flag_color[node] =  ColorThief(flags[node]).get_color(quality=1)
+	    
+	def RGB(red,green,blue): 
+	    return '#%02x%02x%02x' % (red,green,blue)
+	
+	ax=plt.gca()
+	fig=plt.gcf()
+	plt.axis('off')
+	plt.title('Eurovision 2018 Final Votes',fontsize = 24)
+	
+	trans = ax.transData.transform
+	trans2 = fig.transFigure.inverted().transform
+	
+	tick_params = {'top':'off', 'bottom':'off', 'left':'off', 'right':'off',
+	              'labelleft':'off', 'labelbottom':'off'} #flag grid params
+	
+	styles = ['dotted','dashdot','dashed','solid'] # line styles
+	
+	pos = pos_geo
+	    
+	# draw edges
+	for e in G.edges(data=True):
+	    width = e[2]['points']/24 #normalize by max points
+	    style=styles[int(width*3)]
+	    if width>0.3: #filter small votes
+	        nx.draw_networkx_edges(G,pos,edgelist=[e],width=width, style=style, edge_color = RGB(*flag_color[e[0]]) )
+	        # in networkx versions >2.1 arrowheads can be adjusted
+	
+	#draw nodes    
+	for node in G.nodes():      
+	    imsize = max((0.3*G.in_degree(node,weight='points')
+	                  /max(dict(G.in_degree(weight='points')).values()))**2,0.03)
+	    
+	    # size is proportional to the votes
+	    flag = mpl.image.imread(flags[node])
+	    
+	    (x,y) = pos[node]
+	    xx,yy = trans((x,y)) # figure coordinates
+	    xa,ya = trans2((xx,yy)) # axes coordinates
+	    
+	    country = plt.axes([xa-imsize/2.0,ya-imsize/2.0, imsize, imsize ])
+	    country.imshow(flag)
+	    country.set_aspect('equal')
+	    country.tick_params(**tick_params)
